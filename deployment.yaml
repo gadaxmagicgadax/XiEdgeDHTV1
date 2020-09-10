@@ -2,7 +2,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: task-influx-claim
+  name: task-influx-claim2
 spec:
   accessModes:
     - ReadWriteOnce
@@ -27,7 +27,7 @@ spec:
       volumes:
         - name: var-lib-influxdb
           persistentVolumeClaim:
-            claimName: task-influx-claim
+            claimName: task-influx-claim2
       containers:
         - name: influxdb
           image: 'docker.io/influxdb:1.6.4'
