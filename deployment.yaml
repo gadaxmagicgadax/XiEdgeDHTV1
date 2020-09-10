@@ -121,7 +121,7 @@ spec:
     spec:
       containers:
         - name: xi-kafka-influx
-          image: ggadax/xektia
+          image: ggadax/xektia:xektiav1
           imagePullPolicy: Always
           env:
             - name: KAFKA_SERVER
