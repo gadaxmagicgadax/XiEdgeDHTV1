@@ -86,7 +86,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: GF_INSTALL_PLUGINS
-              value: grafana-worldmap-panel
+              value: pr0ps-trackmap-panel
           ports:
             - name: web
               containerPort: 3000
