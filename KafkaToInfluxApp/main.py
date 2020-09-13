@@ -30,7 +30,7 @@ for msg in consumer:
     data = json.loads(msg.value)
     value = [data]
     client.write_points(value)
-    print("Data written to DB : " + value)
+    print("Data written to DB : " + str(value))
 
     #data = json.loads(msg.value)
     #if data['measurement'] == 'latitude' or data['measurement'] == 'longitude' or data['measurement'] == 'altitude' :
