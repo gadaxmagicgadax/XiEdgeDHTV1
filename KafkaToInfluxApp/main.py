@@ -27,33 +27,35 @@ consumer = KafkaConsumer(
 
 for msg in consumer:
     print (msg)
-    data = json.loads(msg.value)
-    if data['measurement'] == 'latitude' or data['measurement'] == 'longitude' or data['measurement'] == 'altitude' :
-        value = [
-            {"measurement":"weather",
-                "tags": {
-                            "Area": "Italy",
-                            "Location": "Aprilia"
-                        },
-                "fields":
-                {
-                    str(data['measurement']): data['value']
-                }       
-            }
-        ]
-    else:
-        value = [
-            {"measurement":"weather",
-                "tags": {
-                            "Area": "Italy",
-                            "Location": "Aprilia"
-                        },
-                "fields":
-                {
-                    str(data['measurement']): float(data['value'])
-                }       
-            }
-        ]
+    value = [msg]
     client.write_points(value)
-    print("Data written to DB")
+    print("Data written to DB : " + value)
+
+    #data = json.loads(msg.value)
+    #if data['measurement'] == 'latitude' or data['measurement'] == 'longitude' or data['measurement'] == 'altitude' :
+    #    value = [
+    #        {"measurement":"weather",
+    #            "tags": {
+    #                        "Area": "Italy",
+    #                        "Location": "Aprilia"
+    #                    },
+    #            "fields":
+    #            {
+    #                str(data['measurement']): data['value']
+    #            }       
+    #        }
+    #    ]
+    #else:
+    #    value = [
+    #        {"measurement":"weather",
+    #            "tags": {
+    #                        "Area": "Italy",
+    #                        "Location": "Aprilia"
+    #                    },
+    #            "fields":
+    #            {
+    #                str(data['measurement']): float(data['value'])
+    #            }       
+    #        }
+    #    ]
     
