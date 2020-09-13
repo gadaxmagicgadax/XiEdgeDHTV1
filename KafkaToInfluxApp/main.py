@@ -8,7 +8,7 @@ KAFKA_SERVER = os.environ.get('KAFKA_SERVER') or print("KAFKA_SERVER Not defined
 INFLUXDB_SERVER = os.environ.get('INFLUXDB_SERVER') or print("INFLUXDB_SERVER Not defined")
 print("KAFKA_TOPIC " + KAFKA_TOPIC)
 print("KAFKA_SERVER " + KAFKA_SERVER)
-print("INFLUXDB_SERVER" + INFLUXDB_SERVER)
+print("INFLUXDB_SERVER " + INFLUXDB_SERVER)
 
 client = InfluxDBClient(host=INFLUXDB_SERVER, port=8086)
 
@@ -27,7 +27,8 @@ consumer = KafkaConsumer(
 
 for msg in consumer:
     print (msg)
-    value = [msg]
+    data = json.loads(msg.value)
+    value = [data]
     client.write_points(value)
     print("Data written to DB : " + value)
 
