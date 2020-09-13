@@ -84,6 +84,9 @@ spec:
         - name: grafana
           image: grafana/grafana
           imagePullPolicy: IfNotPresent
+          env:
+            - name: GF_INSTALL_PLUGINS
+              value: 'https://grafana.com/api/plugins/alexandra-trackmap-panel/versions/1.2.5/download;alexandra-trackmap-panel'
           ports:
             - name: web
               containerPort: 3000
