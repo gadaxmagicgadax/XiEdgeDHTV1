@@ -28,6 +28,7 @@ spec:
         - name: var-lib-influxdb
           persistentVolumeClaim:
             claimName: task-influx-claim2
+# influxDB 1.7 is necessary to make TrackMap plugin to work in Grafana
       containers:
         - name: influxdb
           image: 'docker.io/influxdb:1.7'
@@ -84,6 +85,8 @@ spec:
         - name: grafana
           image: grafana/grafana
           imagePullPolicy: IfNotPresent
+# environment variable GF_INSTALL_PLUGINS=pr0ps-trackmap-panel introduced to install the TrackMap plugin
+# when grafana docker container is created
           env:
             - name: GF_INSTALL_PLUGINS
               value: pr0ps-trackmap-panel
