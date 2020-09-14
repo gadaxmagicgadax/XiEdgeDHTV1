@@ -2,7 +2,9 @@
 
 ## Overview
 
-This solution ingests weather data from an weather station based on Raspberry Pi. Data is ingested using MQTT, the incoming weather data is then validated using a serverless function written in python. Data is then sent to a Kafka topic using the Xi IoT Data Pipeline. Three containerized applications are then deployed to consume data from Kafka, input the data to Influx DB and graphed using Grafana.
+This work has been expedited starting from the original PoC written and tested by Emil Nilsson ([https://github.com/voxic/XiEdgeKafkaWeatherStationV2](https://github.com/voxic/XiEdgeKafkaWeatherStationV2))
+
+This solution ingests weather data from an weather station based on ESP32. Data is ingested using MQTT, the incoming weather data is then validated using a serverless function written in python. Data is then sent to a Kafka topic using the Xi IoT Data Pipeline. Three containerized applications are then deployed to consume data from Kafka, input the data to Influx DB and graphing using Grafana.
 
 !["Overview"](overview.png)
 
@@ -13,17 +15,14 @@ Simple step by step guide for setting up the Xi IoT Weather station using Xi IoT
 ## Step 1 - Create a project
 
 Sign in to the Xi IoT Portal. Open the ```Projects``` section in the menu on the left. Click on ```Create```.
-Give your project a name and assign a user.  
-Click ```Next```. Assign a service domain using ```Add service domain```.  
-Click ```Next```. Enable services for our project.  
-This project is making use of
+Give your project a name and assign a user.Click ```Next```. Assign a service domain using ```Add service domain```.Click ```Next```. Enable services for our project.This project is making use of
 
 * Kubernetes Apps
 * Functions and Data Pipelines
 * Ingress Controller - Traefik
 * Data Streaming - Kafka, NATS
 
-Click on ```Create```. 
+Click on ```Create```.
 
 ## Step 2 - Setup data source
 
@@ -35,7 +34,7 @@ Open the ```Categories``` section in the menu and click ```Create```. Give the n
 
 Once we have our category setup we can add the data source.
 
-Open the ```Data sources and IoT sensors``` section of the menu. Click on ```Add Data source```.  
+Open the ```Data sources and IoT sensors``` section of the menu. Click on ```Add Data source```.
 Select ```sensor```, Give the data source a Name, a associated Service domain, select ```MQTT```as protocol.
 Click ```Generate Certificates``` to generate .X509 certificates for device authentication. Download the certificates before clicking ```Next```. In the next step, add the MQTT Topic your Weather stations publishes it's data on.
 
@@ -57,7 +56,7 @@ In my example Im using Python and the built in Python3 Env runtime environment.
 
 !["Serverless"](serverless.png)
 
-Click on ```Next```.  
+Click on ```Next```.
 The function I am using is simply outputting the incoming data to the service domain log before sending the data forwards in the data pipeline. Upload your function or copy and paste.
 
 ```python
@@ -82,8 +81,8 @@ def main(ctx,msg):
     elif(payload['measurement'] == "wind"):
         logging.info("Wind is: " + payload["value"])
     else:
-        logging.info("Unknown measurement")                  
-    
+        logging.info("Unknown measurement")                
+  
     return ctx.send(str.encode(json.dumps(payload)))
 
 ```
@@ -93,13 +92,13 @@ Click on ```Create``` down in the right corner.
 ## Step 4 - Create a Data pipeline
 
 Next step is to connect our data source to our function using a ```Data pipeline```.
-Click on ```Functions and Data Pipelines``` in the menu and select the ```Data Pipelines``` tab.  
+Click on ```Functions and Data Pipelines``` in the menu and select the ```Data Pipelines``` tab.
 Click on ``` Create```
 
-Give the Data pipeline a Name  
-Under ```Input``` select ```Data source``` and then ```IncommingData``` and ```weather``` category from step 2.  
+Give the Data pipeline a Name
+Under ```Input``` select ```Data source``` and then ```IncommingData``` and ```weather``` category from step 2.
 Under ```Transformation``` select our function from step 3.
-Under ```Output``` select ```Publish to service domain```,  
+Under ```Output``` select ```Publish to service domain```,
 select ```Kafka``` as Endpoint type and enter ```data``` as Endpoint Name.
 !["data pipeline"](dataPipeline.png)
 
@@ -110,7 +109,7 @@ Click on ```Create``` down in the right corner.
 The next and final step is to deploy the kubernetes applications.
 Select ```Kubernetes Apps``` from the menu. Click on ```Create```.
 
-Enter a name for our application.  
+Enter a name for our application.
 Select your Service Domain.
 Click on ```Next``` down in the right corner.
 
@@ -122,10 +121,11 @@ In my example I am deploying 3 containers.
 
 #### Kafak consumer
 
-This is a simple python application that consumes data from the Kafka service and inputs the data to the influx data base. It is available as an image (voxic/xektia) on dockerhub.  
+This is a simple python application that consumes data from the Kafka service and inputs the data to the influx data base. It is available as an image (voxic/xektia) on dockerhub.
 
 Source:
-``` python
+
+```python
 import os
 from kafka import KafkaConsumer
 from influxdb import InfluxDBClient
@@ -165,7 +165,7 @@ for msg in consumer:
             "fields":
             {
                     str(data['measurement']): float(data['value'])
-            }       
+            }     
         }
     ]
     client.write_points(value)
@@ -180,8 +180,10 @@ Influx DB is an open source time series database. More info at https://www.influ
 
 Grafana is an open source tool for building dashboards. More info at https://grafana.com/
 
-___
+---
+
 To deploy our applications paste the following deployment configuration:
+
 ```yaml
 ---
 kind: PersistentVolumeClaim
@@ -264,7 +266,7 @@ spec:
       volumes:
         - name: var-lib-grafana
           persistentVolumeClaim:
-            claimName: task-grafana-claim    
+            claimName: task-grafana-claim  
       containers:
         - name: grafana
           image: grafana/grafana
@@ -314,10 +316,10 @@ spec:
             - name: KAFKA_TOPIC
               value: weather-data
             - name: INFLUXDB_SERVER
-              value: svc-influxdb    
+              value: svc-influxdb  
 ```
 
-Click on ```Next``` down in the right corner. We don't need any outputs so click on ```Create``` down in the right corner.  
+Click on ```Next``` down in the right corner. We don't need any outputs so click on ```Create``` down in the right corner.
 This deployment creates two persistent volume claims, one for Influx DB and one for Grafana for data persistency. It also makes use of the built in Ingress controller to publish the Grafana user interface.
 
 We have now finished the setup of Xi IoT Weather Station.
@@ -329,7 +331,7 @@ Default username _and_ password for Grafana is ```admin```
 
 #### Configuring Grafana data source (connecting Grafana to InfluxDB)
 
-In Grafana click on the cogs icon in the menu on the left. Click on ```Data Sources```.  
+In Grafana click on the cogs icon in the menu on the left. Click on ```Data Sources```.
 Click ```Add Data Source```.
 Fill in settings:
 
