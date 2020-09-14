@@ -4,7 +4,19 @@
 
 This work has been expedited starting from the original PoC written and tested by Emil Nilsson ([https://github.com/voxic/XiEdgeKafkaWeatherStationV2](https://github.com/voxic/XiEdgeKafkaWeatherStationV2))
 
-This solution ingests weather data from an weather station based on ESP32. Data is ingested using MQTT, the incoming weather data is then validated using a serverless function written in python. Data is then sent to a Kafka topic using the Xi IoT Data Pipeline. Three containerized applications are then deployed to consume data from Kafka, input the data to Influx DB and graphing using Grafana.
+This solution ingests weather data from an weather station based on ESP32 DHT11 sensor for temperature and humidity and Ublox Neo-6m GPS receiver.
+
+!["ESP32"](ESP32-DHT-UBlox-LCD.png)
+
+ESP32 connects to internet via my iPhone and send sensor and GPS data to Nutanix Xi Edge Platform via MQTT protocol. Code in ESP32 is in micropython. LCD display has been used for testing purposes.
+
+To make it work you have to define the sensor in Nutanix platform and get the appropriate certificates to connect and send data.
+
+So , data is ingested using MQTT, the incoming weather data is in this format:
+
+`{"measurement":"weather", "tags": { "Area": "Italy", "Location": "Aprilia" }, "fields": {"temperature" : "25","humidity" : "52","latitude" : "41.79642","longitude" : "12.42329","altitude" : "76.4"}}`
+
+Such format is prepared by the micropython code in the ESP32 and ready to be sent to the InfluxDB. Data is then sent to a Kafka topic using the Xi IoT Data Pipeline. Three containerized applications are then deployed to consume data from Kafka, input the data to Influx DB and graphing using Grafana.
 
 !["Overview"](overview.png)
 
@@ -40,7 +52,7 @@ Click ```Generate Certificates``` to generate .X509 certificates for device auth
 
 !["MQTT topic"](mqtttopic.png)
 
-In my example my weather station publishes on the MQTT topic ```weather\data```.
+In this example my ESP32 microcontroller publishes on the MQTT topic ```weather\data```.
 
 Click on ```Next```. Assign the incoming data to the category we created earlier in this step.
 
