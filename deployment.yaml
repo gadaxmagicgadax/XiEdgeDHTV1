@@ -30,7 +30,7 @@ spec:
             claimName: task-influx-claim2
       containers:
         - name: influxdb
-          image: 'docker.io/influxdb:1.6.4'
+          image: 'docker.io/influxdb:1.7'
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8086
