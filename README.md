@@ -8,15 +8,15 @@ This solution ingests weather data from a weather station based on ESP32 DHT11 s
 
 !["ESP32"](ESP32-DHT-UBlox-LCD.png)
 
-ESP32 connects to internet via my iPhone and send sensor and GPS data to Nutanix Karbon Service Platform via MQTT protocol. Code in ESP32 is in micropython. LCD display has been used for testing purposes.
+ESP32 connects to internet via my iPhone and send sensor and GPS data to Nutanix Karbon Platform Services via MQTT protocol. Code in ESP32 is in micropython. LCD display has been used for testing purposes.
 
-To make it work you have to define the sensor in Nutanix platform and get the appropriate certificates to connect and send data. See [here](https://github.com/gadaxmagicgadax/DHTmqttNutanixIoT) for the details
+To make it work you have to define the sensor in Karbon Platform Services and get the appropriate certificates to connect and send data. See [here](https://github.com/gadaxmagicgadax/DHTmqttNutanixIoT) for the details of the breadboard project.
 
 So , data is ingested using MQTT, the incoming weather data is in this format:
 
 `{"measurement":"weather", "tags": { "Area": "Italy", "Location": "Aprilia" }, "fields": {"temperature" : "25","humidity" : "52","latitude" : "41.79642","longitude" : "12.42329","altitude" : "76.4"}}`
 
-Such format is prepared by the micropython code in the ESP32 and ready to be sent to the InfluxDB. Data is then sent to a Kafka topic using the Xi IoT Data Pipeline. Three containerized applications are then deployed to consume data from Kafka, input the data to Influx DB and graphing using Grafana.
+Such format is prepared by the micropython code in the ESP32 and ready to be sent to the InfluxDB. Data is then sent to a Kafka topic using the Data Pipeline. Three containerized applications are then deployed to consume data from Kafka, input the data to Influx DB and graphing using Grafana.
 
 !["Overview"](overview.png)
 
