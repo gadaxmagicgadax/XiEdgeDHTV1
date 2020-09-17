@@ -10,7 +10,7 @@ This solution ingests weather data from a weather station based on ESP32 DHT11 s
 
 ESP32 connects to internet via my iPhone and send sensor and GPS data to Nutanix Karbon Service Platform via MQTT protocol. Code in ESP32 is in micropython. LCD display has been used for testing purposes.
 
-To make it work you have to define the sensor in Nutanix platform and get the appropriate certificates to connect and send data.
+To make it work you have to define the sensor in Nutanix platform and get the appropriate certificates to connect and send data. See [here](https://github.com/gadaxmagicgadax/DHTmqttNutanixIoT) for the details
 
 So , data is ingested using MQTT, the incoming weather data is in this format:
 
