@@ -2,13 +2,13 @@
 
 ## Overview
 
-This work has been expedited starting from the original PoC written and tested by Emil Nilsson ([https://github.com/voxic/XiEdgeKafkaWeatherStationV2](https://github.com/voxic/XiEdgeKafkaWeatherStationV2))
+This work has been carried out starting from the original PoC written and tested by Emil Nilsson ([https://github.com/voxic/XiEdgeKafkaWeatherStationV2](https://github.com/voxic/XiEdgeKafkaWeatherStationV2))
 
-This solution ingests weather data from an weather station based on ESP32 DHT11 sensor for temperature and humidity and Ublox Neo-6m GPS receiver.
+This solution ingests weather data from a weather station based on ESP32 DHT11 sensor for temperature and humidity and Ublox Neo-6m GPS receiver.
 
 !["ESP32"](ESP32-DHT-UBlox-LCD.png)
 
-ESP32 connects to internet via my iPhone and send sensor and GPS data to Nutanix Xi Edge Platform via MQTT protocol. Code in ESP32 is in micropython. LCD display has been used for testing purposes.
+ESP32 connects to internet via my iPhone and send sensor and GPS data to Nutanix Karbon Service Platform via MQTT protocol. Code in ESP32 is in micropython. LCD display has been used for testing purposes.
 
 To make it work you have to define the sensor in Nutanix platform and get the appropriate certificates to connect and send data.
 
