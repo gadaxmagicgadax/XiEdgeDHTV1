@@ -342,3 +342,11 @@ Fill in settings:
 Click on ```Save and Test```.
 
 Once the data source is connected you can import this template Dashboard (WeatherStat-1600098838539.json) using the ```+``` in the left menu to import JSON.
+
+Plug the ESP32 to a usb powerbank or into your car , activate the hotspot on your mobile and go !
+
+Here an example just going from Aprilia to Rome. I started the air conditioned and then set it off to make some changes to temperature and humidity.
+
+![Grafana1](grafana1.png)
+
+![Grafana2](grafana2.png)
