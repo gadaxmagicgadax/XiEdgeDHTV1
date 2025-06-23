@@ -126,7 +126,7 @@ In my example I am deploying 3 containers.
 * Influx DB
 * Grafana
 
-#### Kafak consumer
+#### Kafka consumer
 
 This is a simple python application that consumes data from the Kafka service and inputs the data to the influx data base. It is available as an image (voxic/xektia) on dockerhub.
 
